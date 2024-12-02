@@ -20,9 +20,10 @@ async function main() {
 		const year = 2024;
 		try {
 			const res = await getAocData(day, year);
+
 			const data = await res.text();
 			await Bun.write(
-				`${Bun.env.DATA_DIR}/${String(day).padStart(2, "0")}_data.txt`,
+				`${Bun.env.DATA}/${String(day).padStart(2, "0")}_data.txt`,
 				data,
 			);
 			return;
@@ -37,6 +38,7 @@ async function main() {
 	const answer = await import(
 		`@/solutions/${String(day).padStart(2, "0")}_solution`
 	);
+
 	console.log(await answer.default(data));
 }
 
