@@ -17,10 +17,8 @@ async function main() {
 	validate([command, dayArg]);
 
 	if (command === "fetch") {
-		const year = 2024;
 		try {
-			const res = await getAocData(day, year);
-
+			const res = await getAocData(day, 2024);
 			const data = await res.text();
 			await Bun.write(
 				`${Bun.env.DATA}/${String(day).padStart(2, "0")}_data.txt`,
@@ -43,7 +41,5 @@ async function main() {
 }
 
 main().catch((error) => {
-	if (error instanceof Error) {
-		console.error(error.message);
-	}
+	console.error(error instanceof Error ? error.message : error);
 });
