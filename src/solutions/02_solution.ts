@@ -1,4 +1,4 @@
-export default async function (data: string) {
+function part1(data: string) {
 	const reports = data
 		.trim()
 		.split("\n")
@@ -26,3 +26,5 @@ export default async function (data: string) {
 	}
 	return count;
 }
+
+export default { 1: part1 };

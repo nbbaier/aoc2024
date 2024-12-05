@@ -1,4 +1,4 @@
-export default async function (data: string) {
+function part1(data: string) {
 	const pairs = data.trim().split("\n");
 
 	const left: number[] = [];
@@ -26,3 +26,5 @@ export default async function (data: string) {
 
 	return totalDifference;
 }
+
+export default { 1: part1 };

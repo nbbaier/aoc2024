@@ -1,4 +1,4 @@
-export default async function (data: string) {
+export function part1(data: string) {
 	const mulRegex = /mul\((\d{1,3},\d{1,3})\)/g;
 
 	const programs = data.trim().split("\n");
@@ -16,3 +16,5 @@ export default async function (data: string) {
 
 	return total;
 }
+
+export default { 1: part1 };

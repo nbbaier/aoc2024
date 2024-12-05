@@ -8,7 +8,7 @@ type Direction = {
 	dy: number;
 };
 
-export default function (input: string): number {
+function part1(input: string): number {
 	// Parse input into 2D array
 	const grid = input
 		.trim()
@@ -71,3 +71,8 @@ function checkXMAS(grid: string[][], start: Point, dir: Direction): boolean {
 
 	return true;
 }
+
+function part2(data: string) {
+	return "not yet implemented";
+}
+export default { 1: part1, 2: part2 };
