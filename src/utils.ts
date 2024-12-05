@@ -1,3 +1,5 @@
+import path from "node:path";
+
 export const getAocData = async (day: number, year: number) => {
 	return await fetch(`https://adventofcode.com/${year}/day/${day}/input`, {
 		headers: {
@@ -5,8 +7,6 @@ export const getAocData = async (day: number, year: number) => {
 		},
 	});
 };
-
-import path from "node:path";
 
 export async function loadData(day: number, example = false) {
 	const dayString = String(day).padStart(2, "0");
