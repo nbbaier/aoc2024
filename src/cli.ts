@@ -3,6 +3,19 @@ import { getAocData, loadData } from "./utils";
 
 export const app = new Command().name("aoc-runner").option("-d, --debug"); // program type includes chained options and arguments
 
+app.command("create <day>").action(async (dayArg) => {
+	const code = `function part1(data: string) {
+	return "not yet implemented";
+}
+
+export default { 1: part1 };`;
+	const day = Number.parseFloat(dayArg);
+	await Bun.write(
+		`${Bun.env.SOLUTIONS}/${String(day).padStart(2, "0")}_solution.ts`,
+		code,
+	);
+});
+
 app.command("fetch <day>").action(async (dayArg) => {
 	try {
 		const day = Number.parseFloat(dayArg);
