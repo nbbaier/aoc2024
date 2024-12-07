@@ -8,56 +8,43 @@ type Direction = {
 	dy: number;
 };
 
-function part1(input: string): number {
-	// Parse input into 2D array
-	const grid = input
-		.trim()
-		.split("\n")
-		.map((line) => line.split(""));
+type DirLabel = "r" | "l" | "d" | "u" | "ur" | "dl" | "dr" | "ul";
 
-	// All possible directions to check (horizontal, vertical, diagonal)
-	const directions: Direction[] = [
-		{ dx: 1, dy: 0 }, // right
-		{ dx: -1, dy: 0 }, // left
-		{ dx: 0, dy: 1 }, // down
-		{ dx: 0, dy: -1 }, // up
-		{ dx: 1, dy: 1 }, // diagonal down-right
-		{ dx: -1, dy: 1 }, // diagonal down-left
-		{ dx: 1, dy: -1 }, // diagonal up-right
-		{ dx: -1, dy: -1 }, // diagonal up-left
-	];
+const directions: { [K in DirLabel]?: Direction } = {
+	r: { dx: 1, dy: 0 }, // right
+	l: { dx: -1, dy: 0 }, // left
+	d: { dx: 0, dy: 1 }, // down
+	u: { dx: 0, dy: -1 }, // up
+	ur: { dx: 1, dy: -1 }, // up-right
+	dl: { dx: -1, dy: 1 }, // down-left
+	dr: { dx: 1, dy: 1 }, // down-right
+	ul: { dx: -1, dy: -1 }, // up-left
+};
 
-	let xmasCount = 0;
-	const rows = grid.length;
-	const cols = grid[0].length;
-
-	// Check each cell as a potential starting point
-	for (let y = 0; y < rows; y++) {
-		for (let x = 0; x < cols; x++) {
-			// For each direction
-			for (const dir of directions) {
-				if (checkXMAS(grid, { x, y }, dir)) {
-					xmasCount++;
-				}
-			}
-		}
-	}
-
-	return xmasCount;
-}
-
-function checkXMAS(grid: string[][], start: Point, dir: Direction): boolean {
-	const target = "XMAS";
-	const rows = grid.length;
-	const cols = grid[0].length;
-
-	// Check if the word would go out of bounds
-	const endX = start.x + dir.dx * (target.length - 1);
-	const endY = start.y + dir.dy * (target.length - 1);
+function checkOutOfBounds(
+	start: Point,
+	dir: Direction,
+	rows: number,
+	cols: number,
+) {
+	const endX = start.x + dir.dx;
+	const endY = start.y + dir.dy;
 
 	if (endX < 0 || endX >= cols || endY < 0 || endY >= rows) {
 		return false;
 	}
+}
+function checkXMAS(
+	grid: string[][],
+	start: Point,
+	dir: Direction,
+	rows: number,
+	cols: number,
+): boolean {
+	const target = "XMAS";
+
+	// Check if the word would go out of bounds
+	checkOutOfBounds(start, dir, rows, cols);
 
 	// Check each character of "XMAS"
 	for (let i = 0; i < target.length; i++) {
@@ -71,8 +58,74 @@ function checkXMAS(grid: string[][], start: Point, dir: Direction): boolean {
 
 	return true;
 }
+function checkCorners(
+	grid: string[][],
+	start: Point,
+	rows: number,
+	cols: number,
+): boolean {
+	const region: string[][] = [];
+	const corners = Object.fromEntries(
+		Object.entries(directions).filter(([k, v]) => k.includes("-")),
+	);
+
+	for (const corner of Object.entries(corners)) {
+		checkOutOfBounds(start, corner[1], rows, cols);
+	}
+
+	// get the diagonals
+	const lrDiag = `${grid[start.y + corners.ur.dy][start.x + corners.ur.dx]}${grid[start.y + corners.dl.dy][start.x + corners.dl.dx]}`;
+	const rlDiag = `${grid[start.y + corners.ul.dy][start.x + corners.ul.dx]}${grid[start.y + corners.dr.dy][start.x + corners.dr.dx]}`;
+
+	// return the check of the diagonals
+	return ["MS", "SM"].includes(lrDiag) && ["MS", "SM"].includes(rlDiag);
+}
+
+function part1(data: string): number {
+	const grid = data
+		.trim()
+		.split("\n")
+		.map((line) => line.split(""));
+
+	let xmasCount = 0;
+	const rows = grid.length;
+	const cols = grid[0].length;
+
+	// Check each cell as a potential starting point
+	for (let y = 0; y < rows; y++) {
+		for (let x = 0; x < cols; x++) {
+			// For each direction
+			for (const dir of Object.values(directions)) {
+				if (checkXMAS(grid, { x, y }, dir, rows, cols)) {
+					xmasCount++;
+				}
+			}
+		}
+	}
+
+	return xmasCount;
+}
 
 function part2(data: string) {
-	return "not yet implemented";
+	const grid = data
+		.trim()
+		.split("\n")
+		.map((line) => line.split(""));
+
+	let xmasCount = 0;
+	const rows = grid.length;
+	const cols = grid[0].length;
+
+	// find all the A's and check their corners
+	for (let y = 0; y < rows; y++) {
+		for (let x = 0; x < cols; x++) {
+			if (grid[y][x] === "A") {
+				xmasCount += checkCorners(grid, { x, y }, rows, cols) ? 1 : 0;
+			}
+		}
+	}
+
+	return xmasCount;
 }
+
 export default { 1: part1, 2: part2 };
