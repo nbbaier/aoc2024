@@ -1,16 +1,6 @@
-type Point = {
-	x: number;
-	y: number;
-};
+import type { Point, DirLabel, Direction } from "@/types";
 
-type Direction = {
-	dx: number;
-	dy: number;
-};
-
-type DirLabel = "r" | "l" | "d" | "u" | "ur" | "dl" | "dr" | "ul";
-
-const directions: { [K in DirLabel]?: Direction } = {
+export const directions: { [K in DirLabel]?: Direction } = {
 	r: { dx: 1, dy: 0 }, // right
 	l: { dx: -1, dy: 0 }, // left
 	d: { dx: 0, dy: 1 }, // down
