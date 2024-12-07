@@ -1,5 +1,3 @@
-import { match } from "ts-pattern";
-
 export function part1(data: string) {
 	const programs = data.replace(/\r/g, "").trim();
 	const regex = /mul\((\d+,\d+)\)/g;
