@@ -1,4 +1,5 @@
 import type { Point, DirLabel, Direction } from "@/types";
+import { checkOutOfBounds } from "@/utils";
 
 export const directions: { [K in DirLabel]?: Direction } = {
 	r: { dx: 1, dy: 0 }, // right
@@ -11,19 +12,6 @@ export const directions: { [K in DirLabel]?: Direction } = {
 	ul: { dx: -1, dy: -1 }, // up-left
 };
 
-function checkOutOfBounds(
-	start: Point,
-	dir: Direction,
-	rows: number,
-	cols: number,
-) {
-	const endX = start.x + dir.dx;
-	const endY = start.y + dir.dy;
-
-	if (endX < 0 || endX >= cols || endY < 0 || endY >= rows) {
-		return false;
-	}
-}
 function checkXMAS(
 	grid: string[][],
 	start: Point,
@@ -33,8 +21,11 @@ function checkXMAS(
 ): boolean {
 	const target = "XMAS";
 
+	const endX = start.x + dir.dx;
+	const endY = start.y + dir.dy;
+
 	// Check if the word would go out of bounds
-	checkOutOfBounds(start, dir, rows, cols);
+	checkOutOfBounds({ x: endX, y: endY }, rows, cols);
 
 	// Check each character of "XMAS"
 	for (let i = 0; i < target.length; i++) {
@@ -60,7 +51,9 @@ function checkCorners(
 	);
 
 	for (const corner of Object.entries(corners)) {
-		checkOutOfBounds(start, corner[1], rows, cols);
+		const endX = start.x + corner[1].dx;
+		const endY = start.y + corner[1].dy;
+		checkOutOfBounds({ x: endX, y: endY }, rows, cols);
 	}
 
 	// get the diagonals
