@@ -1,18 +1,18 @@
 {
-  "name": "aoc2024",
-  "module": "./src/index.ts",
-  "type": "module",
-  "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  },
-  "dependencies": {
-    "@commander-js/extra-typings": "^12.1.0",
-    "@types/toposort": "^2.0.7",
-    "commander": "^12.1.0",
-    "toposort": "^2.0.2"
-  }
+	"name": "aoc2024",
+	"module": "./src/index.ts",
+	"type": "module",
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	},
+	"dependencies": {
+		"@commander-js/extra-typings": "^12.1.0",
+		"@types/toposort": "^2.0.7",
+		"commander": "^12.1.0",
+		"toposort": "^2.0.2"
+	}
 }
