@@ -1,7 +1,7 @@
 import type { Point, DirLabel, Direction } from "@/types";
 import { checkOutOfBounds } from "@/utils";
 
-export const directions: { [K in DirLabel]?: Direction } = {
+const directions: { [K in DirLabel]?: Direction } = {
 	r: { dx: 1, dy: 0 }, // right
 	l: { dx: -1, dy: 0 }, // left
 	d: { dx: 0, dy: 1 }, // down

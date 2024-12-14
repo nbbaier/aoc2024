@@ -20,9 +20,60 @@ export async function loadData(day: number, example = false) {
 	return await file.text();
 }
 
-export function checkOutOfBounds(start: Point, rows: number, cols: number) {
-	if (start.x < 0 || start.x >= cols || start.y < 0 || start.y >= rows) {
-		return false;
+export function checkOutOfBounds(point: Point, rows: number, cols: number) {
+	return point.x < 0 || point.x >= cols || point.y < 0 || point.y >= rows;
+}
+
+export const isValid = (x: number, y: number, rows: number, cols: number) => {
+	return x >= 0 && x < cols && y >= 0 && y < rows;
+};
+
+export function createGrid(data: string) {
+	return data
+		.trim()
+		.split("\n")
+		.map((line) => line.split(""));
+}
+
+export function dfs(grid: string[][], start: { x: number; y: number }) {
+	const rows = grid.length;
+	const cols = grid[0].length;
+	const startValue = grid[start.y][start.x];
+
+	const stack = [start];
+	const visited: Set<string> = new Set();
+	const result = [];
+
+	const directions = [
+		{ x: 1, y: 0 }, // right
+		{ x: -1, y: 0 }, // left
+		{ x: 0, y: 1 }, // down
+		{ x: 0, y: -1 }, // up
+	];
+
+	while (stack.length) {
+		const current = stack.pop();
+		if (!current) continue;
+		const pointKey = `${current.x},${current.y}`;
+
+		if (!visited.has(pointKey)) {
+			visited.add(pointKey);
+			result.push(pointKey);
+
+			for (const dir of directions) {
+				const newX = current.x + dir.x;
+				const newY = current.y + dir.y;
+
+				if (
+					isValid(newX, newY, rows, cols) &&
+					grid[newY][newX] === startValue &&
+					!visited.has(`${newX},${newY}`)
+				) {
+					stack.push({ x: newX, y: newY });
+				}
+			}
+		}
 	}
-	return true;
+
+	return result;
 }
