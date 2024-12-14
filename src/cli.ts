@@ -1,5 +1,6 @@
 import { Command } from "@commander-js/extra-typings";
 import { getAocData, loadData } from "./utils";
+import { performance } from "node:perf_hooks";
 
 export const app = new Command().name("aoc-runner").option("-d, --debug"); // program type includes chained options and arguments
 
@@ -56,6 +57,7 @@ app
 	.command("attempt <day>")
 	.option("-p, --part <n>")
 	.action(async (dayArg, options) => {
+		const start = performance.now();
 		const day = Number.parseFloat(dayArg);
 		const data = await loadData(day, false);
 		const answer = await import(
@@ -63,9 +65,9 @@ app
 		);
 
 		console.log(await answer.default[options.part || 1](data));
-
-		if (app.opts().debug) {
-			console.log(`day: ${day}`);
-			console.log("options:", options);
-		}
+		const end = performance.now();
+		const duration = end - start;
+		console.log(`Operation took ${duration.toFixed(2)} milliseconds`);
 	});
+
+// Your code here
