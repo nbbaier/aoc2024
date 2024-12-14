@@ -13,6 +13,7 @@
 		"@commander-js/extra-typings": "^12.1.0",
 		"@types/toposort": "^2.0.7",
 		"commander": "^12.1.0",
+		"mathjs": "^14.0.1",
 		"toposort": "^2.0.2"
 	}
 }
