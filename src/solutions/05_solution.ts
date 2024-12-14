@@ -1,12 +1,5 @@
+import { getMiddleElement } from "@/utils";
 import toposort from "toposort";
-
-function getMiddleElement<T>(arr: T[]): T | null {
-	if (arr.length === 0) {
-		return null;
-	}
-	const middleIndex = Math.floor(arr.length / 2);
-	return arr[middleIndex];
-}
 
 function validateUpdate(update: string[], rules: string[]) {
 	const ruleResults = [];

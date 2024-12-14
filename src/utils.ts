@@ -1,5 +1,5 @@
 import path from "node:path";
-import type { Point } from "./types";
+import type { Board, Point } from "./types";
 
 export const getAocData = async (day: number, year: number) => {
 	return await fetch(`https://adventofcode.com/${year}/day/${day}/input`, {
@@ -8,6 +8,14 @@ export const getAocData = async (day: number, year: number) => {
 		},
 	});
 };
+
+export function getMiddleElement<T>(arr: T[]): T | null {
+	if (arr.length === 0) {
+		return null;
+	}
+	const middleIndex = Math.floor(arr.length / 2);
+	return arr[middleIndex];
+}
 
 export async function loadData(day: number, example = false) {
 	const dayString = String(day).padStart(2, "0");
@@ -76,4 +84,33 @@ export function dfs(grid: string[][], start: { x: number; y: number }) {
 	}
 
 	return result;
+}
+function defineQuadrants(board: Board) {
+	const middleRow = Math.floor(board.rows / 2);
+	const middleCol = Math.floor(board.cols / 2);
+
+	const quadrants = {
+		tl: {
+			name: "top-left",
+			x: (n: number) => n >= 0 && n < middleCol, // LEFT
+			y: (n: number) => n >= 0 && n < middleRow, // TOP
+		},
+		tr: {
+			name: "top-right",
+			x: (n: number) => n > middleCol && n < board.cols, // RIGHT
+			y: (n: number) => n >= 0 && n < middleRow, // TOP
+		},
+		bl: {
+			name: "bottom-left",
+			x: (n: number) => n >= 0 && n < middleCol, // LEFT
+			y: (n: number) => n > middleRow && n < board.rows, // BOTTOM
+		},
+		br: {
+			name: "bottom-right",
+			x: (n: number) => n > middleCol && n < board.cols, // RIGHT
+			y: (n: number) => n > middleRow && n < board.rows, // BOTTOM
+		},
+	};
+
+	return { rowsMiddle: middleRow, colsMiddle: middleCol };
 }
