@@ -4,18 +4,18 @@ import { getAocData, loadData } from "./utils";
 export const app = new Command().name("aoc-runner").option("-d, --debug"); // program type includes chained options and arguments
 
 app.command("create <day>").action(async (dayArg) => {
-	const code = `function part1(data: string) { return "part 1 not implemented"; }\n
-function part2(data: string) { return "part 2 not implemented"; }\n
-export default { 1: part1, 2: part2 };`;
+	const code = `function part1(data: string) { return "part 1 not implemented"; }\nfunction part2(data: string) { return "part 2 not implemented"; }\nexport default { 1: part1, 2: part2 };`;
 	const day = Number.parseFloat(dayArg);
-	await Bun.write(
-		`${Bun.env.SOLUTIONS}/${String(day).padStart(2, "0")}_solution.ts`,
-		code,
-	);
-	await Bun.write(
-		`${Bun.env.DATA}/${String(day).padStart(2, "0")}_example.txt`,
-		"",
-	);
+	const solutionFile = `${Bun.env.SOLUTIONS}/${String(day).padStart(2, "0")}_solution.ts`;
+	const exampleFile = `${Bun.env.DATA}/${String(day).padStart(2, "0")}_example.txt`;
+
+	if (!(await Bun.file(solutionFile).exists())) {
+		await Bun.write(solutionFile, code);
+	}
+
+	if (!(await Bun.file(exampleFile).exists())) {
+		await Bun.write(exampleFile, "");
+	}
 });
 
 app.command("fetch <day>").action(async (dayArg) => {
