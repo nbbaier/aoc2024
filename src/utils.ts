@@ -19,9 +19,7 @@ export function getMiddleElement<T>(arr: T[]): T | null {
 
 export async function loadData(day: number, example = false) {
 	const dayString = String(day).padStart(2, "0");
-	const fileName = example
-		? `${dayString}_example.txt`
-		: `${dayString}_data.txt`;
+	const fileName = example ? `${dayString}_example.txt` : `${dayString}_data.txt`;
 	const dataPath = path.join(Bun.env.DATA, fileName);
 	const file = Bun.file(dataPath);
 
